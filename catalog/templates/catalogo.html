@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script src="{% static 'scripts.js' %}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>One Piece TCG</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="logo-container">
+    <img src="https://en.onepiece-cardgame.com/images/common/pc/logo_op.png" alt="One Piece Logo"
+         style="max-width: 200px; margin-left: 10px;">
+    <div class="input-group search-bar-container">
+        <input type="text" class="form-control custom-width" placeholder="Buscar...">
+    </div>
+</div>
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-12">
+            <img src="https://i.imgur.com/3T2XUIt.jpeg" alt="Banner" class="img-fluid">
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <!-- Columna de Filtros -->
+        <div class="col-md-3">
+            {% include 'filters.html' %}
+        </div>
+
+        <!-- Columna de Productos -->
+        <div class="col-md-9">
+            <div class="row">
+                {% for producto in productos %}
+                    <div class="col-md-3 mb-3 producto-card {{ producto.nombre|lower|slugify }} tarjeta-con-efecto">
+                        <a href="{{ producto.url }}" target="_blank" class="text-decoration-none">
+                            <div class="card roboto-condensed h-100 rounded">
+                                <div class="text-center">
+                                    <img src="{{ producto.image }}" class="card-img-top mb-2 img-fluid" alt="{{ producto.nombre }}"
+                                         style="object-fit: contain; height: 300px;">
+                                </div>
+                                <div class="separador"></div>
+                                <div class="card-body">
+                                    <div class="producto-type {% if producto.type_id == 1 %}starter-deck{% elif producto.type_id == 2 %}booster-pack{% endif %}">
+                                        {{ producto.type }}
+                                    </div>
+                                    <h3 class="card-title text-dark">{{ producto.nombre }}</h3>
+                                    <p class="card-text text-dark">Idioma: {{ producto.idioma }}</p>
+                                    <p class="card-text text-dark precio">${{ producto.precio_clp }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

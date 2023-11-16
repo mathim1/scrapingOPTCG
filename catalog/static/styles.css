@@ -1,0 +1,79 @@
+/*!* styles.css *!*/
+
+.logo-container {
+    position: relative;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: -30px;
+    margin-left: 10px;
+}
+
+.search-bar-container {
+    transform: translate(60%);
+    max-width: 33%;
+}
+
+.roboto-condensed {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.precio {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.separador {
+    border-top: 1px solid #ccc;
+}
+
+.card {
+    transform: scale(0.95);
+    margin: 0px;
+}
+
+.producto-card {
+    padding: 5px; /* Ajusta según necesites */
+}
+
+.producto-type {
+    max-width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    white-space: nowrap;
+    padding: 3px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-bottom: 7px;
+    background-color: rgb(68, 116, 217);
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+}
+
+.booster-pack {
+    background-color: #ff6f00; /* Naranja para BOOSTER PACK */
+}
+
+
+.card-body {
+    background-color: #f0f0f0;
+}
+
+.tarjeta-con-efecto .card:hover {
+    background-color: #f0f0f0;
+}
+
+.tarjeta-con-efecto .card:hover .card-body.bg-darker {
+    background-color: #c9c9c9; /* Cambia el color de fondo al hacer hover */
+}
+
+.col-12 {
+    padding: 0;
+}
+
+.img-fluid {
+    width: 100%;
+    height: auto;
+}
