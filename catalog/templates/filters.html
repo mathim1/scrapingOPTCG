@@ -1,13 +1,21 @@
-<!-- filters.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <title>Filtros</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+
 <div class="filter-container">
     <h5>Filtros</h5>
 
-    <!-- Barra de búsqueda -->
     <div class="mb-3">
         <input type="text" class="form-control" placeholder="Buscar...">
     </div>
 
-    <!-- Filtro de tipo de producto -->
+    <hr>
+
     <h6>Tipo de Producto</h6>
     <div class="form-check">
         <input class="form-check-input" type="checkbox" value="" id="boosterPackCheck">
@@ -21,4 +29,111 @@
             STARTER DECK
         </label>
     </div>
+
+    <hr>
+
+    <h6>Color</h6>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="colorRed">
+        <label class="form-check-label" for="colorRed">Red</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="colorPurple">
+        <label class="form-check-label" for="colorPurple">Purple</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="colorGreen">
+        <label class="form-check-label" for="colorGreen">Green</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="colorBlue">
+        <label class="form-check-label" for="colorBlue">Blue</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="colorBlack">
+        <label class="form-check-label" for="colorBlack">Black</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="colorYellow">
+        <label class="form-check-label" for="colorYellow">Yellow</label>
+    </div>
+
+    <hr>
+
+    <h6>Set</h6>
+    <div class="scrollable" style="max-height: 300px; overflow-y: auto;">
+        <!-- Opciones de Set -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-romanceDawn">
+            <label class="form-check-label" for="set-romanceDawn">Romance Dawn (OP-01)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-paramountWar">
+            <label class="form-check-label" for="set-paramountWar">Paramount War (OP-02)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-pillarsOfStrength">
+            <label class="form-check-label" for="set-pillarsOfStrength">Pillars Of Strength (OP-03)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-kingdomsOfIntrigue">
+            <label class="form-check-label" for="set-kingdomsOfIntrigue">Kingdoms of Intrigue (OP-04)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-wingsOfTheCaptain">
+            <label class="form-check-label" for="set-wingsOfTheCaptain">Wings Of The Captain (OP-06)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoLuffyRojo">
+            <label class="form-check-label" for="set-mazoLuffyRojo">MAZO SH LUFFY ROJO (ST-01)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoKiddVerde">
+            <label class="form-check-label" for="set-mazoKiddVerde">MAZO KIDD VERDE (ST-02)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoCrocodileAzul">
+            <label class="form-check-label" for="set-mazoCrocodileAzul">MAZO CROCODILE AZUL (ST-03)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoKaido">
+            <label class="form-check-label" for="set-mazoKaido">MAZO KAIDO (ST-04)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoOnePieceRed">
+            <label class="form-check-label" for="set-mazoOnePieceRed">MAZO ONE PIECE RED (ST-05)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoAkainu">
+            <label class="form-check-label" for="set-mazoAkainu">MAZO AKAINU (ST-06)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoBigMomAmarillo">
+            <label class="form-check-label" for="set-mazoBigMomAmarillo">MAZO BIG MOM AMARILLO (ST-07)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoLuffy">
+            <label class="form-check-label" for="set-mazoLuffy">MAZO LUFFY (ST-08)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoYamato">
+            <label class="form-check-label" for="set-mazoYamato">MAZO YAMATO (ST-09)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazo3Capitanes">
+            <label class="form-check-label" for="set-mazo3Capitanes">MAZO 3 CAPITANES (ST-10)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoUta">
+            <label class="form-check-label" for="set-mazoUta">MAZO UTA (ST-11)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="set-mazoZoroSanji">
+            <label class="form-check-label" for="set-mazoZoroSanji">MAZO ZORO & SANJI (ST-12)</label>
+        </div>
+    </div>
+
+
 </div>
+</body>
+</html>

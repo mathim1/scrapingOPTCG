@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from .models import Producto
 from decimal import Decimal
+from django.core.paginator import Paginator
 import requests
 import math
+
 
 def catalogo(request):
     productos = Producto.objects.filter(precio__gt=0).select_related('moneda')
@@ -31,8 +33,14 @@ def catalogo(request):
         producto_menor_precio.precio_clp = format_clp(producto_menor_precio.precio_clp)
         productos_menor_precio.append(producto_menor_precio)
 
-    # Ahora productos_menor_precio contiene solo los productos con el menor precio en CLP para cada nombre e idioma
-    return render(request, 'catalogo.html', {'productos': productos_menor_precio})
+    # Configurar la paginación
+    paginator = Paginator(productos_menor_precio, 8)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Pasa el objeto de página al contexto del template
+    return render(request, 'catalogo.html', {'page_obj': page_obj})
+
 
 def obtener_tasas_cambio():
     url = "https://openexchangerates.org/api/latest.json?app_id=132beca8844b465cb190e92dbec85ef6"
@@ -46,6 +54,7 @@ def obtener_tasas_cambio():
         # Maneja el error como creas conveniente, por ejemplo, loguear el error
         pass
     return tasas_cambio
+
 
 def format_clp(value):
     return "{:,.0f}".format(value).replace(",", ".")

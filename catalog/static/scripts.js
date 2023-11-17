@@ -39,3 +39,7 @@ function setupProductHoverEffect() {
     });
 }
 
+$('.pagination .page-link').on('click', function(e) {
+    e.preventDefault();
+    // Aquí puedes agregar lo que necesites hacer cuando se haga clic en un botón de paginación
+});

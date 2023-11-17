@@ -1,5 +1,9 @@
 /*!* styles.css *!*/
 
+body {
+    background-color: #F7F7F7;
+}
+
 .logo-container {
     position: relative;
     display: flex;
@@ -29,10 +33,11 @@
 .card {
     transform: scale(0.95);
     margin: 0px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .producto-card {
-    padding: 5px; /* Ajusta según necesites */
+    padding: 5px;
 }
 
 .producto-type {
@@ -63,10 +68,13 @@
 
 .tarjeta-con-efecto .card:hover {
     background-color: #f0f0f0;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+
 }
 
 .tarjeta-con-efecto .card:hover .card-body.bg-darker {
-    background-color: #c9c9c9; /* Cambia el color de fondo al hacer hover */
+    background-color: #c9c9c9;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .col-12 {
@@ -76,4 +84,43 @@
 .img-fluid {
     width: 100%;
     height: auto;
+}
+
+
+.pagination .page-link {
+    color: #000;
+    background-color: #F7F7F7;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.pagination .page-link:hover {
+    color: #000000;
+    background-color: #FFFFFF; /* Cambio de color de fondo al hacer hover */
+    border: 1px solid #d3d3d3;
+}
+
+.pagination .page-item.active .page-link {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.pagination .page-link i {
+    color: inherit;
+}
+
+
+.form-check {
+    margin-bottom: 15px;
+}
+
+
+.borde-filtro {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: white;
 }
