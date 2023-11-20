@@ -30,10 +30,17 @@
 
 <div class="col-12">
     <div class="custom-black-line">
-        <div class="line-left">Amazon</div>
-        <div class="line-right">Chile</div>
+        <div class="line-left">
+            <a href="{% if moneda_filtro == 'otras' %}/catalog/catalogo/{% else %}?moneda=otras{% endif %}"
+               class="{% if moneda_filtro == 'otras' %}selected{% endif %}">Amazon</a>
+        </div>
+        <div class="line-right">
+            <a href="{% if moneda_filtro == 'CLP' %}/catalog/catalogo/{% else %}?moneda=CLP{% endif %}"
+               class="{% if moneda_filtro == 'CLP' %}selected{% endif %}">Chile</a>
+        </div>
     </div>
 </div>
+
 
 <div class="container-fluid mt-3">
     <div class="row d-flex align-items-start">
@@ -75,7 +82,9 @@
     <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous page">
+                <a class="page-link" href="?page=
+                        {{ page_obj.previous_page_number }}{% if moneda_filtro %}&moneda={{ moneda_filtro }}{% endif %}"
+                   aria-label="Previous page">
                     <i class="fas fa-chevron-left"></i>
                 </a>
             </li>
@@ -83,13 +92,16 @@
 
         {% for num in page_obj.paginator.page_range %}
             <li class="page-item {% if page_obj.number == num %}active{% endif %}" style="margin: 0 5px;">
-                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                <a class="page-link"
+                   href="?page={{ num }}{% if moneda_filtro %}&moneda={{ moneda_filtro }}{% endif %}">{{ num }}</a>
             </li>
         {% endfor %}
 
         {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next page">
+                <a class="page-link" href="?page=
+                        {{ page_obj.next_page_number }}{% if moneda_filtro %}&moneda={{ moneda_filtro }}{% endif %}"
+                   aria-label="Next page">
                     <i class="fas fa-chevron-right"></i>
                 </a>
             </li>

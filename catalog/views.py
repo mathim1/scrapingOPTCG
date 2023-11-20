@@ -7,7 +7,15 @@ import math
 
 
 def catalogo(request):
+    moneda_filtro = request.GET.get('moneda')
+
     productos = Producto.objects.filter(precio__gt=0).select_related('moneda')
+    if moneda_filtro:
+        if moneda_filtro == 'CLP':
+            productos = productos.filter(moneda__moneda='CLP')
+        else:
+            productos = productos.exclude(moneda__moneda='CLP')
+
     tasas_cambio = obtener_tasas_cambio()
 
     # Crear un diccionario para almacenar los precios en CLP
@@ -39,7 +47,7 @@ def catalogo(request):
     page_obj = paginator.get_page(page_number)
 
     # Pasa el objeto de página al contexto del template
-    return render(request, 'catalogo.html', {'page_obj': page_obj})
+    return render(request, 'catalogo.html', {'page_obj': page_obj, 'moneda_filtro': moneda_filtro})
 
 
 def obtener_tasas_cambio():
@@ -51,7 +59,6 @@ def obtener_tasas_cambio():
         tasas_cambio['USD'] = data['rates']['CLP']  # USD a CLP
         tasas_cambio['JPY'] = data['rates']['CLP'] / data['rates']['JPY']  # JPY a CLP
     else:
-        # Maneja el error como creas conveniente, por ejemplo, loguear el error
         pass
     return tasas_cambio
 
