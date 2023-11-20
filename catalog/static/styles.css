@@ -36,9 +36,6 @@ body {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.producto-card {
-    padding: 5px;
-}
 
 .producto-type {
     max-width: 100%;
@@ -52,13 +49,16 @@ body {
     box-sizing: border-box;
     border-radius: 4px;
     margin-bottom: 7px;
-    background-color: rgb(68, 116, 217);
-    color: rgb(255, 255, 255);
-    font-size: 12px;
+    background-color: rgb(154, 188, 250);
+    color: rgb(0, 60, 178);
+    font-size: 11px;
+    font-weight: bold;
 }
 
 .booster-pack {
-    background-color: #ff6f00; /* Naranja para BOOSTER PACK */
+    background-color: #f3bf9a; /* Naranja para BOOSTER PACK */
+    color: #d25800;
+    font-weight: bold;
 }
 
 
@@ -73,7 +73,7 @@ body {
 }
 
 .tarjeta-con-efecto .card:hover .card-body.bg-darker {
-    background-color: #c9c9c9;
+    background-color: #e7e7e7;
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
 }
 
@@ -123,4 +123,28 @@ body {
     padding: 10px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     background-color: white;
+}
+
+.custom-black-line {
+    display: flex;
+    background-color: black;
+    color: white;
+}
+
+.line-left, .line-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0; /* Ajusta el padding según necesites */
+}
+
+.line-left {
+    text-align: left;
+    padding-left: 10px; /* Ajusta según necesites */
+}
+
+.line-right {
+    text-align: right;
+    padding-right: 10px; /* Ajusta según necesites */
 }

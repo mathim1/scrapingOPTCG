@@ -28,6 +28,13 @@
     </div>
 </div>
 
+<div class="col-12">
+    <div class="custom-black-line">
+        <div class="line-left">Amazon</div>
+        <div class="line-right">Chile</div>
+    </div>
+</div>
+
 <div class="container-fluid mt-3">
     <div class="row d-flex align-items-start">
         <div class="col-md-2 borde-filtro" style="margin-left: 20px;">
@@ -35,10 +42,10 @@
         </div>
 
         <!-- Columna de Productos -->
-        <div class="col-md-9" >
-            <div class="row" >
+        <div class="col-md-9">
+            <div class="row">
                 {% for producto in page_obj %}
-                    <div class="col-md-3 mb-3 producto-card {{ producto.nombre|lower|slugify }} tarjeta-con-efecto" >
+                    <div class="col-md-3 producto-card {{ producto.nombre|lower|slugify }} tarjeta-con-efecto">
                         <a href="{{ producto.url }}" target="_blank" class="text-decoration-none">
                             <div class="card roboto-condensed h-100 rounded">
                                 <div class="text-center">
