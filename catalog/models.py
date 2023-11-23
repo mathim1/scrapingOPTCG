@@ -38,6 +38,8 @@ class Producto(models.Model):
     url = models.TextField()
     image = models.ForeignKey(Images, on_delete=models.CASCADE)
     moneda = models.ForeignKey(Moneda, on_delete=models.CASCADE)
+    set = models.CharField(max_length=20)
+    color = models.CharField(max_length=20)
 
     def __str__(self):
         return self.nombre
