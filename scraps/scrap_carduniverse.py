@@ -2,7 +2,6 @@ import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "onePieceTCG.settings")
 import django
-
 django.setup()
 
 from requests_html import HTMLSession
@@ -10,7 +9,6 @@ from bs4 import BeautifulSoup
 from catalog.models import Producto, Moneda
 
 s = HTMLSession()
-
 
 def obtener_info_producto(url):
     # Validar que la URL comience con 'https://carduniverse.cl/'
@@ -23,6 +21,15 @@ def obtener_info_producto(url):
     response.html.render(sleep=1)
     # Utilizar BeautifulSoup para parsear el HTML
     soup = BeautifulSoup(response.html.html, 'html.parser')
+
+    # Verificar si el producto está fuera de inventario o agotado
+    out_of_stock_element = soup.find('div', {'class': 'product-block'})
+    sold_out_element = soup.find('span', {'id': 'addToCartText-template--16843225235688__main'})
+
+    if (out_of_stock_element and "Lo sentimos, este artículo está fuera de inventario" in out_of_stock_element.text) \
+        or (sold_out_element and "Agotado" in sold_out_element.text):
+        # Producto fuera de inventario o agotado
+        return {'title': 'Producto no disponible', 'price': 0}
 
     # Obtener el título del producto
     product_title_element = soup.find('h1', {'class': 'page-title'})
@@ -40,7 +47,6 @@ def obtener_info_producto(url):
     total_price = int(final_price)
 
     return {'title': product_title, 'price': total_price}
-
 
 # Obtener el ID de la moneda CLP
 moneda_clp = Moneda.objects.get(moneda='CLP')

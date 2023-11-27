@@ -25,7 +25,12 @@ def obtener_info_producto(url):
     # Parsear el HTML renderizado
     soup = BeautifulSoup(r.html.html, 'html.parser')
 
-    # Obtener el título y precio del producto como se hace en tu función original
+    # Verificar si el producto está agotado
+    agotado_element = soup.find('h2', {'class': 'product-form__availability-title'})
+    if agotado_element and agotado_element.text.strip() == "Agotado":
+        return {'title': 'Producto Agotado', 'price': 0}
+
+    # Obtener el título y precio del producto
     product_title_element = soup.find('h1', {'class': 'product-info__name'})
     product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
 
@@ -55,4 +60,3 @@ for producto in productos:
         # Actualizar el campo de precio en la base de datos
         producto.precio = info_producto['price']
         producto.save()
-

@@ -7,40 +7,44 @@ import django
 django.setup()
 
 from requests_html import HTMLSession
-from bs4 import BeautifulSoup
 from catalog.models import Producto, Moneda
+import requests
 
 # Inicia la sesión HTTP
 s = HTMLSession()
 
+from bs4 import BeautifulSoup
+
 
 def obtener_info_producto(url):
-    if not url.startswith("https://drawn.cl/"):
+    if not url.startswith("https://www.gamingplace.cl/"):
         return None
 
+    s = requests.Session()
     response = s.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    product_title_element = soup.find('h1', {'class': 'product-title product_title entry-title'})
+    # Obtiene el título del producto
+    product_title_element = soup.find('h1', {'class': 'page-header m-0 text-left'})
     product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
 
-    price_wrapper = soup.find('div', {'class': 'price-wrapper'})
+    # Verifica la disponibilidad del producto
+    stock_element = soup.find('span', {'class': 'product-form-stock'})
+    if stock_element and stock_element.text.strip().isdigit():
+        stock = int(stock_element.text.strip())
+        if stock <= 0:
+            return {'title': product_title, 'price': 0}
+    else:
+        return {'title': product_title, 'price': 0}
 
-    if price_wrapper:
-        # Intenta encontrar un precio de oferta primero
-        final_price_element = price_wrapper.find('ins')
-        if not final_price_element:
-            # Si no hay precio de oferta, busca el precio normal
-            final_price_element = price_wrapper.find('span', {'class': 'woocommerce-Price-amount amount'})
-
-        if final_price_element:
-            final_price = final_price_element.text.strip().replace('$', '').replace('.', '')
-        else:
-            final_price = '0'
+    # Busca el precio
+    final_price_element = soup.find('span', {'class': 'product-form-price form-price', 'id': 'product-form-price'})
+    if final_price_element:
+        final_price = final_price_element.text.strip().replace('$', '').replace(' CLP', '').replace('.', '')
     else:
         final_price = '0'
 
-    total_price = int(final_price)
+    total_price = int(final_price) if final_price.isdigit() else 'Precio no disponible'
 
     return {'title': product_title, 'price': total_price}
 

@@ -7,40 +7,46 @@ import django
 django.setup()
 
 from requests_html import HTMLSession
-from bs4 import BeautifulSoup
 from catalog.models import Producto, Moneda
+from bs4 import BeautifulSoup
+import requests as s
 
 # Inicia la sesión HTTP
 s = HTMLSession()
 
 
 def obtener_info_producto(url):
-    if not url.startswith("https://drawn.cl/"):
+    # Verificar si la URL pertenece al dominio correcto
+    if not url.startswith("https://addictionmodel.cl/"):
         return None
 
     response = s.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    product_title_element = soup.find('h1', {'class': 'product-title product_title entry-title'})
+    # Verificar si el producto está agotado utilizando el botón "Sin stock"
+    stock_button = soup.find('input', {
+        'type': 'submit',
+        'class': lambda x: x and 'product-buy-btn' in x.split(),
+        'value': 'Sin stock'
+    })
+
+    if stock_button and stock_button.has_attr('disabled'):
+        return {'title': 'Producto agotado', 'price': 0}
+
+    # Obtener el título del producto
+    product_title_element = soup.find('h1', {'id': 'product-name', 'itemprop': 'name'})
     product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
 
-    price_wrapper = soup.find('div', {'class': 'price-wrapper'})
-
-    if price_wrapper:
-        # Intenta encontrar un precio de oferta primero
-        final_price_element = price_wrapper.find('ins')
-        if not final_price_element:
-            # Si no hay precio de oferta, busca el precio normal
-            final_price_element = price_wrapper.find('span', {'class': 'woocommerce-Price-amount amount'})
-
-        if final_price_element:
-            final_price = final_price_element.text.strip().replace('$', '').replace('.', '')
+    # Obtener el precio del producto
+    price_element = soup.find('span', {'class': 'price product-price js-price-display', 'id': 'price_display'})
+    if price_element:
+        final_price = price_element.text.strip().replace('$', '').replace('.', '')
+        if final_price:
+            total_price = int(final_price)
         else:
-            final_price = '0'
+            total_price = 0
     else:
-        final_price = '0'
-
-    total_price = int(final_price)
+        total_price = 0
 
     return {'title': product_title, 'price': total_price}
 

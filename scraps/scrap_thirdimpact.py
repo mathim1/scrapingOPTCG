@@ -9,7 +9,6 @@ django.setup()
 from requests_html import HTMLSession
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import time
 from catalog.models import Producto, Moneda
@@ -39,6 +38,12 @@ def obtener_info_producto(url):
         product_title_element = soup.find('h1', {'class': 'product-title product_title entry-title'})
         product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
 
+        # Verificar si el producto está agotado
+        stock_element = soup.find('p', {'class': 'stock out-of-stock'})
+        if stock_element and stock_element.text.strip() == 'Agotado':
+            print('Producto agotado')
+            return {'title': product_title, 'price': 0}
+
         # Búsqueda de precio
         price_element = soup.find('p', {'class': 'price product-page-price price-on-sale'})
         final_price = None
@@ -59,6 +64,7 @@ def obtener_info_producto(url):
         total_price = int(final_price) if final_price and final_price.isdigit() else 0
 
         return {'title': product_title, 'price': total_price}
+
 
     except Exception as e:
         print(f"Ocurrió un error: {e}")
@@ -82,5 +88,4 @@ for producto in productos:
 
         producto.precio = info_producto['price']
         producto.save()
-    else:
-        print(f'La URL del producto {producto.nombre} no corresponde con la base deseada y no será procesada.')
+
