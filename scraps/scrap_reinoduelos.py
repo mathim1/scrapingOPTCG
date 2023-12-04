@@ -18,7 +18,6 @@ def obtener_info_producto(url):
         return None
 
     r = s.get(url)
-    r.html.render(sleep=1)
     soup = BeautifulSoup(r.html.html, 'html.parser')
 
     # Verificar si el producto está agotado

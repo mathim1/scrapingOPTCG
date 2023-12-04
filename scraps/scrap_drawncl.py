@@ -21,6 +21,15 @@ def obtener_info_producto(url):
     response = s.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
+    # Verificar si el producto está agotado
+    stock_status_element = soup.find('p', {'class': 'stock out-of-stock'})
+    if stock_status_element:
+        # Si el producto está agotado, devuelve el título con precio 0
+        product_title_element = soup.find('h1', {'class': 'product-title product_title entry-title'})
+        product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
+        return {'title': product_title, 'price': 0}
+
+    # Si el producto no está agotado, continúa con la obtención de la información
     product_title_element = soup.find('h1', {'class': 'product-title product_title entry-title'})
     product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
 

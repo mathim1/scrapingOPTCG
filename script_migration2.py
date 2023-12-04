@@ -148,7 +148,7 @@ productos_data = [
      "descripcion": "",
      "url": "https://elreinodelosduelos.cl/producto/one-piece-card-game-double-pack-set-vol-1-dp-01/",
      "type": Type.objects.get(type="BOOSTER PACK"),
-     "image": Images.objects.get(image="https://m.media-amazon.com/images/I/81pEhtjSSVL._AC_SL1500_.jpg"),
+     "image": Images.objects.get(image="https://progaming.cl/wp-content/uploads/2023/09/one-piece-1-1bedba2c-0b01-4660-8f88-f4c26374cb85.jpg"),
      "moneda": Moneda.objects.get(moneda="CLP"),
      "set": "OP04",
      "color": ""},
@@ -253,7 +253,7 @@ productos_data = [
      "url": "https://carduniverse.cl/collections/one-piece-card-game/products/reserva-double-pack-set-volume-1-display-dp01",
      "type": Type.objects.get(type="BOOSTER PACK"),
      "image": Images.objects.get(
-         image="https://m.media-amazon.com/images/I/81pEhtjSSVL._AC_SL1500_.jpg"),
+         image="https://progaming.cl/wp-content/uploads/2023/09/one-piece-1-1bedba2c-0b01-4660-8f88-f4c26374cb85.jpg"),
      "moneda": Moneda.objects.get(moneda="CLP"),
      "set": "OP04",
      "color": ""},
@@ -320,7 +320,7 @@ productos_data = [
      "url": "https://www.geekers.cl/one-piece-pillars-of-strength-booster-pack-copiar-1",
      "type": Type.objects.get(type="BOOSTER PACK"),
      "image": Images.objects.get(
-         image="https://m.media-amazon.com/images/I/81pEhtjSSVL._AC_SL1500_.jpg"),
+         image="https://progaming.cl/wp-content/uploads/2023/09/one-piece-1-1bedba2c-0b01-4660-8f88-f4c26374cb85.jpg"),
      "moneda": Moneda.objects.get(moneda="CLP"),
      "set": "OP04",
      "color": ""},

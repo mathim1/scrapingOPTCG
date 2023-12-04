@@ -64,6 +64,11 @@ def obtener_urls_de_usuario():
         urls.append(url)
     return urls
 
+def clasificar_cartas_individualmente(cartas):
+    clasificacion_individual = Counter()
+    for carta in cartas:
+        clasificacion_individual[carta] += 1
+    return clasificacion_individual
 
 def main():
     urls = obtener_urls_de_usuario()  # Obtener URLs del usuario
@@ -83,22 +88,26 @@ def main():
         hilo.join()
 
     clasificacion_global = Counter()
+    clasificacion_individual_global = Counter()
 
     # Procesar los resultados de cada hilo
     for url, cartas in resultados.items():
         clasificacion_deck = clasificar_cartas(cartas)
+        clasificacion_individual_deck = clasificar_cartas_individualmente(cartas)
         porcentajes_deck = calcular_porcentajes(clasificacion_deck)
 
         print(f"Porcentajes para el deck de la URL {url}:\n", porcentajes_deck)
+        print(f"Conteo individual de cartas para el deck de la URL {url}:\n", clasificacion_individual_deck)
 
         clasificacion_global.update(clasificacion_deck)
+        clasificacion_individual_global.update(clasificacion_individual_deck)
 
     # Calcular y mostrar los porcentajes globales
     porcentajes_globales = calcular_porcentajes(clasificacion_global)
 
     print("\nClasificación global de cartas por set:", clasificacion_global)
     print("Porcentajes globales de cartas por set:", porcentajes_globales)
-
+    print("Conteo global individual de cartas:", clasificacion_individual_global)
 
 if __name__ == "__main__":
     main()
