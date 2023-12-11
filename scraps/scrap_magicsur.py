@@ -10,7 +10,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
-import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from catalog.models import Producto, Moneda
 
 
@@ -24,7 +26,9 @@ def obtener_info_producto(url):
 
     with webdriver.Chrome(service=service, options=options) as driver:
         driver.get(url)
-        time.sleep(5)  # Esperar a que el JavaScript se ejecute
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'span#product-availability'))
+        )
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 

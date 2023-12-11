@@ -10,7 +10,9 @@ from requests_html import HTMLSession
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
-import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from catalog.models import Producto, Moneda
 
 s = HTMLSession()
@@ -27,7 +29,9 @@ def obtener_info_producto(url):
 
     try:
         driver.get(url)
-        time.sleep(5)
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'h1.product-title.product_title.entry-title'))
+        )
 
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')

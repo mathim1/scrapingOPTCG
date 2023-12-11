@@ -1,7 +1,9 @@
 import os
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "onePieceTCG.settings")
 
 import django
+
 django.setup()
 
 from requests_html import HTMLSession
@@ -9,10 +11,14 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
-import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from catalog.models import Producto, Moneda
+from selenium.common.exceptions import TimeoutException
 
 s = HTMLSession()
+
 
 def obtener_info_producto(url):
     print(f"Verificando URL: {url}")  # Impresión de diagnóstico
@@ -21,14 +27,20 @@ def obtener_info_producto(url):
         return None
 
     options = Options()
-    options.headless = True  # Ejecutar en modo sin cabeza
+    options.headless = True
     service = Service('C:/Windows/chromedriver-win64/chromedriver.exe')
 
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
         driver.get(url)
-        time.sleep(5)  # Esperar a que el JavaScript se ejecute
+        try:
+            WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-bs="product.stock"]'))
+            )
+        except TimeoutException:
+            print("Tiempo de espera agotado, no se encontró el elemento. Estableciendo el precio en 0.")
+            return {'title': 'Tiempo de Espera Agotado', 'price': 0}
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
@@ -56,6 +68,7 @@ def obtener_info_producto(url):
         return {'title': product_title, 'price': total_price}
     finally:
         driver.quit()
+
 
 moneda_clp = Moneda.objects.get(moneda='CLP')
 productos = Producto.objects.filter(moneda=moneda_clp)

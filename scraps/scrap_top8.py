@@ -1,15 +1,19 @@
 import os
-import time
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "onePieceTCG.settings")
 
 import django
+
 django.setup()
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 from catalog.models import Producto, Moneda
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 def obtener_info_producto(url):
     if not url.startswith("https://www.top8.cl/"):
@@ -17,12 +21,17 @@ def obtener_info_producto(url):
 
     options = webdriver.ChromeOptions()
     options.headless = True
-    service = Service('C:/Windows/chromedriver-win64/chromedriver.exe')  # Asegúrate de que esta sea la ruta correcta de tu chromedriver
+    service = Service(
+        'C:/Windows/chromedriver-win64/chromedriver.exe')
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
         driver.get(url)
-        time.sleep(5)  # Esperar a que se cargue la página
+
+        # Wait for the product title to appear
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'h1.bs-product__title'))
+        )
 
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
@@ -54,6 +63,7 @@ def obtener_info_producto(url):
         return None
     finally:
         driver.quit()
+
 
 # Obtener la instancia de la moneda CLP
 moneda_clp = Moneda.objects.get(moneda='CLP')

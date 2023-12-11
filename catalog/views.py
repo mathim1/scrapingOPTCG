@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Producto
+from .models import Producto, Card
 from decimal import Decimal
 from django.core.paginator import Paginator
 import requests
@@ -65,3 +65,10 @@ def obtener_tasas_cambio():
 
 def format_clp(value):
     return "{:,.0f}".format(value).replace(",", ".")
+
+def obtener_precio(carta_id):
+    try:
+        carta = Card.objects.get(carid=carta_id)
+        return carta.price
+    except Card.DoesNotExist:
+        return 0  # O manejar de otra manera si la carta no existe

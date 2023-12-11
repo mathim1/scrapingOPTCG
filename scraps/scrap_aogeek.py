@@ -21,6 +21,11 @@ def obtener_info_producto(url):
     response = s.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
+    # Verificación de URL rota
+    url_broken_element = soup.find('h1', {'class': 'title'})
+    if url_broken_element and url_broken_element.text.strip() == "Uy...Que el enlace está roto.":
+        return {'title': 'URL Rota', 'price': 0}
+
     # Verificación del Stock
     stock_status_element = soup.find('p', {'class': 'stock'})
     if 'out-of-stock' in stock_status_element.get('class', []):

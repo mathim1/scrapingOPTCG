@@ -36,7 +36,8 @@ def obtener_info_producto(url):
             final_price_element = offer_price_element.find('bdi')
         else:
             # Si no hay precio de oferta, buscar el precio normal
-            final_price_element = price_element.find('del')
+            final_price_element = price_element.find('span', {'class': 'woocommerce-Price-amount amount'}).find(
+                'bdi') if price_element else None
 
         if final_price_element:
             final_price = final_price_element.text.strip().replace('$', '').replace('.', '')

@@ -10,35 +10,45 @@ from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 from catalog.models import Producto, Moneda
 
+# Inicia la sesión HTTP
 s = HTMLSession()
 
 
 def obtener_info_producto(url):
-    # Verificar que la URL comience con "https://www.playset.cl/"
-    if not url.startswith("https://www.playset.cl/"):
+    if not url.startswith("https://www.pokesos.cl/"):
         return None
 
-    # Realizar la solicitud HTTP al sitio web
     response = s.get(url)
-
-    # Utilizar BeautifulSoup para parsear el HTML
     soup = BeautifulSoup(response.text, 'html.parser')
 
+    # Verificar si el producto está agotado
     stock_status_element = soup.find('p', {'class': 'stock out-of-stock'})
-    if stock_status_element and stock_status_element.text.strip() == "Sin existencias":
-        # Producto sin stock
-        return {'title': 'Producto sin stock', 'price': 0}
+    if stock_status_element and stock_status_element.text.strip() == "Agotado":
+        # Si el producto está agotado, devuelve el título con precio 0
+        product_title_element = soup.find('h1', {'class': 'product_title entry-title'})
+        product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
+        return {'title': product_title, 'price': 0}
 
-    # Obtener el título del producto del elemento H1 con la clase específica
-    product_title_element = soup.find('h1', {'class': 'product-title product_title entry-title'})
+    # Si el producto no está agotado, continúa con la obtención de la información
+    product_title_element = soup.find('h1', {'class': 'product_title entry-title'})
     product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
 
-    # Encontrar el precio final en el párrafo con la clase específica
-    final_price_element = soup.find('p', {'class': 'price product-page-price'}).find('span', {
-        'class': 'woocommerce-Price-amount amount'})
-    final_price = final_price_element.text.strip().replace('$', '').replace('.', '') if final_price_element else '0'
+    price_wrapper = soup.find('p', {'class': 'price'})
 
-    # Convertir el precio a un entero
+    if price_wrapper:
+        # Intenta encontrar un precio de oferta primero
+        final_price_element = price_wrapper.find('ins')
+        if not final_price_element:
+            # Si no hay precio de oferta, busca el precio normal
+            final_price_element = price_wrapper.find('span', {'class': 'woocommerce-Price-amount amount'})
+
+        if final_price_element:
+            final_price = final_price_element.text.strip().replace('$', '').replace('.', '').replace(',', '')
+        else:
+            final_price = '0'
+    else:
+        final_price = '0'
+
     total_price = int(final_price)
 
     return {'title': product_title, 'price': total_price}
@@ -63,4 +73,3 @@ for producto in productos:
         # Actualizar el campo de precio en la base de datos
         producto.precio = info_producto['price']
         producto.save()
-
