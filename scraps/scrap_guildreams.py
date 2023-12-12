@@ -21,9 +21,7 @@ s = HTMLSession()
 
 
 def obtener_info_producto(url):
-    print(f"Verificando URL: {url}")  # Impresión de diagnóstico
     if not url.startswith("https://www.guildreams.com/"):
-        print("URL no válida")  # Más impresiones de diagnóstico
         return None
 
     options = Options()
