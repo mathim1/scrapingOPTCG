@@ -43,3 +43,14 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Card(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    carid = models.CharField(max_length=20)
+    moneda = models.ForeignKey(Moneda, on_delete=models.CASCADE)
+    url = models.TextField()
+
+    def __str__(self):
+        return self.name
