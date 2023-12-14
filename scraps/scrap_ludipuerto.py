@@ -24,14 +24,20 @@ def obtener_info_producto(url):
     options = Options()
     options.headless = True
     service = Service('C:/Windows/chromedriver-win64/chromedriver.exe')
-
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
         driver.get(url)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
 
+        # Check if the product is out of stock
+        stock_element = soup.find('p', {'class': 'stock out-of-stock'})
+        if stock_element and stock_element.text.strip() == 'Agotado':
+            return {'title': 'Producto Agotado', 'price': 0}
+
+        # Extract the product title
         try:
-            product_title_element = WebDriverWait(driver, 10).until(
+            product_title_element = WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, 'h1.product_title.wd-entities-title'))
             )
             product_title = product_title_element.text.strip()
@@ -39,10 +45,7 @@ def obtener_info_producto(url):
             print("Tiempo de espera agotado, no se encontró el título del producto.")
             return {'title': 'Tiempo de Espera Agotado', 'price': 0}
 
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-
-        # Implement the scraping logic for the price here
-        # Example (you will need to adjust this to your specific webpage structure):
+        # Extract the price
         price_element = soup.find('p', {'class': 'price'})
         final_price = '0'
         if price_element:
@@ -51,7 +54,6 @@ def obtener_info_producto(url):
                 final_price = final_price_element.text.strip().replace('$', '').replace('.', '')
 
         total_price = int(final_price)
-
         return {'title': product_title, 'price': total_price}
 
     finally:
