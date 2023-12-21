@@ -66,6 +66,7 @@ def obtener_tasas_cambio():
 def format_clp(value):
     return "{:,.0f}".format(value).replace(",", ".")
 
+
 def obtener_precio(carta_id):
     try:
         carta = Card.objects.get(carid=carta_id)
