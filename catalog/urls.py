@@ -1,8 +1,7 @@
-# tienda/urls.py
 from django.urls import path
-from .views import catalogo
+from .views import CatalogoView
 
 urlpatterns = [
-    path('catalogo/', catalogo, name='catalogo'),
-    # Puedes agregar más patrones de URL según tus necesidades
+    # ... tus otras urls
+    path('catalogo/', CatalogoView.as_view(), name='catalogo-api'),
 ]
