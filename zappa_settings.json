@@ -1,0 +1,9 @@
+{
+    "dev": {
+        "django_settings": "onePieceTCG.settings",
+        "profile_name": "default",
+        "project_name": "onepiecetcg",
+        "runtime": "python3.11",
+        "s3_bucket": "zappa-o5tuy4iru"
+    }
+}

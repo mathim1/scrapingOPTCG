@@ -25,3 +25,5 @@ Thumbs.db
 *.pyo
 *.pyd
 .Python
+
+db.sqlite3

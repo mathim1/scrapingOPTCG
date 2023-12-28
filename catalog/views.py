@@ -5,7 +5,10 @@ from .models import Producto, Card
 from decimal import Decimal
 import requests
 import math
+from django.http import HttpResponse
 
+def hello_world(request):
+    return HttpResponse("Hello World")
 
 def obtener_tasas_cambio():
     url = "https://openexchangerates.org/api/latest.json?app_id=132beca8844b465cb190e92dbec85ef6"
@@ -65,3 +68,4 @@ def obtener_precio(carta_id):
         return carta.price
     except Card.DoesNotExist:
         return 0  # O manejar de otra manera si la carta no existe
+

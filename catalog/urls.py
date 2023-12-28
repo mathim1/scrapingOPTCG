@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import CatalogoView
+from .views import *
 
 urlpatterns = [
-    # ... tus otras urls
+    path('', hello_world, name='home'),
     path('catalogo/', CatalogoView.as_view(), name='catalogo-api'),
 ]
