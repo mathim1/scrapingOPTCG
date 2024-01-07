@@ -18,7 +18,7 @@ def obtener_info_producto(url):
     # Realizar la solicitud HTTP al sitio web
     response = s.get(url)
     # Renderizar JavaScript si es necesario
-    response.html.render(sleep=1)
+    response.html.render(sleep=0)
     # Utilizar BeautifulSoup para parsear el HTML
     soup = BeautifulSoup(response.html.html, 'html.parser')
 

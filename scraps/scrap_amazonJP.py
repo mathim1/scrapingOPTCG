@@ -12,7 +12,7 @@ s = HTMLSession()
 
 def obtener_info_producto(url):
     r = s.get(url)
-    r.html.render(sleep=1)
+    r.html.render(sleep=0)
     soup = BeautifulSoup(r.html.html, 'html.parser')
 
     # Obtener el título

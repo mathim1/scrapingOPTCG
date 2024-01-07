@@ -7,14 +7,12 @@ import django
 django.setup()
 
 from requests_html import HTMLSession
-from bs4 import BeautifulSoup
 from catalog.models import Producto, Moneda
+import requests
+from bs4 import BeautifulSoup
 
 # Inicia la sesión HTTP
 s = HTMLSession()
-
-import requests
-from bs4 import BeautifulSoup
 
 
 def obtener_info_producto(url):

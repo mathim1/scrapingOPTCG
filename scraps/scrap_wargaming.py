@@ -23,8 +23,12 @@ def obtener_info_producto(url):
 
     options = Options()
     options.headless = True
-    service = Service('C:/Windows/chromedriver-win64/chromedriver.exe')
-
+    options.add_argument("--no-sandbox")  # Bypass OS security mod
+    options.add_argument("--disable-dev-shm-usage")  # Overcome li
+    options.add_argument("--disable-gpu")  # Applicable to windows
+    options.add_argument("--disable-extensions")
+    options.add_argument("--remote-debugging-port=9222")  # This i
+    service = Service('/usr/local/bin/chromedriver')
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
@@ -32,7 +36,7 @@ def obtener_info_producto(url):
 
         # Esperar a que el elemento esté presente
         try:
-            WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, 'h1.bs-product__title'))
             )
         except TimeoutException:

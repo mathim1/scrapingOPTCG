@@ -21,8 +21,14 @@ def obtener_info_producto(url):
         return None
 
     options = Options()
-    options.headless = True  # Ejecutar en modo sin cabeza
-    service = Service('C:/Windows/chromedriver-win64/chromedriver.exe')
+    options.headless = True
+    options.add_argument("--no-sandbox")  # Bypass OS security model, REQUIRED on Linux
+    options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+    options.add_argument("--disable-gpu")  # Applicable to windows os only
+    options.add_argument("--disable-extensions")
+    options.add_argument("--remote-debugging-port=9222")  # This is important
+
+    service = Service('/usr/local/bin/chromedriver')
 
     with webdriver.Chrome(service=service, options=options) as driver:
         driver.get(url)

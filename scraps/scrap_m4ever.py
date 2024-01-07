@@ -7,43 +7,39 @@ import django
 django.setup()
 
 from requests_html import HTMLSession
-from catalog.models import Producto, Moneda
-import requests
 from bs4 import BeautifulSoup
+from catalog.models import Producto, Moneda
 
 # Inicia la sesión HTTP
 s = HTMLSession()
 
 
 def obtener_info_producto(url):
-    if not url.startswith("https://www.gamingplace.cl/"):
+    if not url.startswith("https://www.m4e.cl/"):
         return None
 
-    s = requests.Session()
     response = s.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Obtiene el título del producto
-    product_title_element = soup.find('h1', {'class': 'page-header m-0 text-left'})
-    product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
-
-    # Verifica la disponibilidad del producto
-    stock_element = soup.find('span', {'class': 'product-form-stock'})
-    if stock_element and stock_element.text.strip().isdigit():
-        stock = int(stock_element.text.strip())
-        if stock <= 0:
-            return {'title': product_title, 'price': 0}
-    else:
+    # Verificar si el producto está agotado
+    stock_status_div = soup.find('div', {'class': 'product-stock'})
+    if stock_status_div and 'visible' in stock_status_div.get('class', []):
+        # Si el producto está agotado, devuelve el título con precio 0
+        product_title_element = soup.find('h1', {'class': 'product-form_title page-title'})
+        product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
         return {'title': product_title, 'price': 0}
 
-    # Busca el precio
-    final_price_element = soup.find('span', {'class': 'product-form-price form-price', 'id': 'product-form-price'})
-    if final_price_element:
-        final_price = final_price_element.text.strip().replace('$', '').replace(' CLP', '').replace('.', '')
+    # Si el producto no está agotado, continúa con la obtención de la información
+    product_title_element = soup.find('h1', {'class': 'product-form_title page-title'})
+    product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
+
+    price_element = soup.find('span', {'class': 'product-form_price', 'id': 'product-form-price'})
+    if price_element:
+        final_price = price_element.text.strip().replace('$', '').replace('.', '')
     else:
         final_price = '0'
 
-    total_price = int(final_price) if final_price.isdigit() else 'Precio no disponible'
+    total_price = int(final_price)
 
     return {'title': product_title, 'price': total_price}
 

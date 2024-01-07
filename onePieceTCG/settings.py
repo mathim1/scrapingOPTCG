@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-#*1ttc0)@d36jqa%unbh7uyhot*2p4j*%b@1gc$+_86#8rc*4*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['rp02pod6ic.execute-api.sa-east-1.amazonaws.com']
 
 # Application definition
 
@@ -78,7 +78,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',  # your database name
         'USER': 'postgres',  # your database username
-        'PASSWORD': 'DawzIn2GHpf3Z59U',  # your database password
+            'PASSWORD': 'DawzIn2GHpf3Z59U',  # your database password
         'HOST': 'db.gpvqctsmebpmdhlyphpj.supabase.co',  # your database host
         'PORT': '5432',  # your database port
     }

@@ -3,6 +3,7 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "onePieceTCG.settings")
 
 import django
+
 django.setup()
 
 from requests_html import HTMLSession
@@ -11,9 +12,10 @@ from catalog.models import Producto, Moneda
 
 s = HTMLSession()
 
+
 def obtener_info_producto(url):
     r = s.get(url)
-    r.html.render(sleep=1)
+    r.html.render(sleep=0)
     soup = BeautifulSoup(r.html.html, 'html.parser')
 
     # Obtener el título
@@ -22,12 +24,14 @@ def obtener_info_producto(url):
 
     # Buscar directamente el texto del precio total
     total_text_element = soup.find(string='Total')
-    price_text = total_text_element.find_next('span', {'class': 'a-size-base a-color-base'}).text.strip() if total_text_element else '0'
+    price_text = total_text_element.find_next('span', {
+        'class': 'a-size-base a-color-base'}).text.strip() if total_text_element else '0'
 
     # Extraer el valor numérico del precio eliminando el 'US$'
     price_value = float(price_text.replace('US$', '').replace(',', ''))
 
     return {'title': product_title, 'price': price_value}
+
 
 # Primero obtenemos el id de la moneda USD
 moneda_usd = Moneda.objects.get(moneda='USD')

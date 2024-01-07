@@ -22,7 +22,14 @@ def obtener_info_producto(url):
 
     options = Options()
     options.headless = True
-    service = Service('C:/Windows/chromedriver-win64/chromedriver.exe')
+    options.add_argument("--no-sandbox")  # Bypass OS security model, REQUIRED on Linux
+    options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+    options.add_argument("--disable-gpu")  # Applicable to windows os only
+    options.add_argument("--disable-extensions")
+    options.add_argument("--remote-debugging-port=9222")  # This is important
+
+    service = Service('/usr/local/bin/chromedriver')
+
     driver = webdriver.Chrome(service=service, options=options)
 
     try:

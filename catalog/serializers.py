@@ -6,7 +6,7 @@ class ProductoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Producto
-        fields = ['id', 'nombre', 'type', 'idioma', 'image', 'moneda', 'precio_clp']
+        fields = ['id', 'nombre', 'type', 'idioma', 'image', 'moneda', 'precio_clp', 'url']
 
     def get_precio_clp(self, obj):
         return obj.precio_clp

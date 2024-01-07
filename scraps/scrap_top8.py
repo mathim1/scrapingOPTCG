@@ -8,8 +8,10 @@ django.setup()
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 from catalog.models import Producto, Moneda
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -19,19 +21,29 @@ def obtener_info_producto(url):
     if not url.startswith("https://www.top8.cl/"):
         return None
 
-    options = webdriver.ChromeOptions()
+    options = Options()
     options.headless = True
-    service = Service(
-        'C:/Windows/chromedriver-win64/chromedriver.exe')
+    options.add_argument("--no-sandbox")  # Bypass OS security model, REQUIRED on Linux
+    options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+    options.add_argument("--disable-gpu")  # Applicable to windows os only
+    options.add_argument("--disable-extensions")
+    options.add_argument("--remote-debugging-port=9222")  # This is important
+
+    service = Service('/usr/local/bin/chromedriver')
+
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
         driver.get(url)
 
-        # Wait for the product title to appear
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'h1.bs-product__title'))
-        )
+        try:
+            # Wait for the product title to appear
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'h1.bs-product__title'))
+            )
+        except TimeoutException:
+            print("Product title not found, setting price to 0")
+            return {'title': 'Título no encontrado', 'price': 0}
 
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
@@ -63,7 +75,6 @@ def obtener_info_producto(url):
         return None
     finally:
         driver.quit()
-
 
 # Obtener la instancia de la moneda CLP
 moneda_clp = Moneda.objects.get(moneda='CLP')
