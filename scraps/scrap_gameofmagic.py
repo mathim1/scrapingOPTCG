@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/home/ec2-user/onePieceTCG')
+
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "onePieceTCG.settings")
@@ -27,16 +30,10 @@ def obtener_info_producto(url):
     if not url.startswith("https://www.gameofmagictienda.cl/"):
         return None
 
-    # Selenium driver configuration
     options = Options()
     options.headless = True
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--disable-extensions")
-    options.add_argument("--remote-debugging-port=9222")
-
-    service = Service('/opt/bin/chromedriver')
+    options.binary_location = '/home/ec2-user/chrome-headless-shell-linux64/chrome-headless-shell'
+    service = Service('/home/ec2-user/chromedriver-linux64/chromedriver')
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
@@ -97,3 +94,5 @@ def run_scraping_gameofmagic():
             # Actualizar el campo de precio en la base de datos
             producto.precio = info_producto['price']
             producto.save()
+
+run_scraping_gameofmagic()

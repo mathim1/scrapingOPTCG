@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append('/home/ec2-user/onePieceTCG')
+
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "onePieceTCG.settings")
@@ -72,3 +76,4 @@ def run_scraping_reinoduelos():
             producto.precio = info_producto['price']
             producto.save()
 
+run_scraping_reinoduelos()

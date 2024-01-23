@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append('/home/ec2-user/onePieceTCG')
+
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "onePieceTCG.settings")
@@ -25,14 +29,8 @@ def obtener_info_producto(url):
 
     options = Options()
     options.headless = True
-    options.add_argument("--no-sandbox")  # Bypass OS security model, REQUIRED on Linux
-    options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
-    options.add_argument("--disable-gpu")  # Applicable to windows os only
-    options.add_argument("--disable-extensions")
-    options.add_argument("--remote-debugging-port=9222")  # This is important
-
-    service = Service('/opt/bin/chromedriver')
-
+    options.binary_location = '/home/ec2-user/chrome-headless-shell-linux64/chrome-headless-shell'  # Replace with actual path
+    service = Service('/home/ec2-user/chromedriver-linux64/chromedriver')
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
@@ -99,3 +97,5 @@ def run_scraping_thirdimpact():
 
             producto.precio = info_producto['price']
             producto.save()
+
+run_scraping_thirdimpact()

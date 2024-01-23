@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append('/home/ec2-user/onePieceTCG')
+
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "onePieceTCG.settings")
@@ -26,14 +30,8 @@ def obtener_info_producto(url):
 
     options = Options()
     options.headless = True
-    options.add_argument("--no-sandbox")  # Bypass OS security model, REQUIRED on Linux
-    options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
-    options.add_argument("--disable-gpu")  # Applicable to windows os only
-    options.add_argument("--disable-extensions")
-    options.add_argument("--remote-debugging-port=9222")  # This is important
-
-    service = Service('/opt/selenium-headless-chromium-python311-738673c1-620d-4b83-8ecf-12e7e0c4bf22/bin/chromedriver')
-
+    options.binary_location = '/home/ec2-user/chrome-headless-shell-linux64/chrome-headless-shell'  # Replace with actual path
+    service = Service('/home/ec2-user/chromedriver-linux64/chromedriver')
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
@@ -73,6 +71,7 @@ def obtener_info_producto(url):
     finally:
         driver.quit()
 
+
 def run_scraping_guildreams():
     moneda_clp = Moneda.objects.get(moneda='CLP')
     productos = Producto.objects.filter(moneda=moneda_clp)
@@ -86,3 +85,6 @@ def run_scraping_guildreams():
                 print('---')
                 producto.precio = info_producto['price']
                 producto.save()
+
+
+run_scraping_guildreams()
