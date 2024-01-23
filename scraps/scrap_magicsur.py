@@ -28,7 +28,7 @@ def obtener_info_producto(url):
     options.add_argument("--disable-extensions")
     options.add_argument("--remote-debugging-port=9222")  # This is important
 
-    service = Service('/usr/local/bin/chromedriver')
+    service = Service('/opt/bin/chromedriver')
 
     with webdriver.Chrome(service=service, options=options) as driver:
         driver.get(url)
@@ -59,18 +59,19 @@ def obtener_info_producto(url):
         return {'title': product_title, 'price': total_price}
 
 
-# Obtiene la instancia de la moneda CLP
-moneda_clp = Moneda.objects.get(moneda='CLP')
+def run_scraping_magicsur():
+    # Obtiene la instancia de la moneda CLP
+    moneda_clp = Moneda.objects.get(moneda='CLP')
 
-# Obtener todos los productos con esa moneda
-productos = Producto.objects.filter(moneda=moneda_clp)
+    # Obtener todos los productos con esa moneda
+    productos = Producto.objects.filter(moneda=moneda_clp)
 
-# Iterar sobre los productos y actualizar la información en la base de datos
-for producto in productos:
-    info_producto = obtener_info_producto(producto.url)
-    if info_producto:
-        print(f'Título para {producto.nombre}: {info_producto["title"]}')
-        print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
-        print('---')
-        producto.precio = info_producto['price']
-        producto.save()
+    # Iterar sobre los productos y actualizar la información en la base de datos
+    for producto in productos:
+        info_producto = obtener_info_producto(producto.url)
+        if info_producto:
+            print(f'Título para {producto.nombre}: {info_producto["title"]}')
+            print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
+            print('---')
+            producto.precio = info_producto['price']
+            producto.save()

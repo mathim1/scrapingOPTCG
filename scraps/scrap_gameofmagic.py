@@ -36,7 +36,7 @@ def obtener_info_producto(url):
     options.add_argument("--disable-extensions")
     options.add_argument("--remote-debugging-port=9222")
 
-    service = Service('/usr/local/bin/chromedriver')
+    service = Service('/opt/bin/chromedriver')
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
@@ -77,26 +77,23 @@ def obtener_info_producto(url):
         driver.quit()
 
 
-# Example usage
-info_producto = obtener_info_producto("https://www.gameofmagictienda.cl/some-product-url")
-print(info_producto)
+def run_scraping_gameofmagic():
+    # Obtiene la instancia de la moneda CLP
+    moneda_clp = Moneda.objects.get(moneda='CLP')
 
-# Obtiene la instancia de la moneda CLP
-moneda_clp = Moneda.objects.get(moneda='CLP')
+    # Obtener todos los productos con esa moneda
+    productos = Producto.objects.filter(moneda=moneda_clp)
 
-# Obtener todos los productos con esa moneda
-productos = Producto.objects.filter(moneda=moneda_clp)
+    # Iterar sobre los productos y actualizar la información en la base de datos
+    for producto in productos:
+        # Procesar el producto si la URL base es correcta
+        info_producto = obtener_info_producto(producto.url)
+        if info_producto:
+            # Imprimir la información obtenida
+            print(f'Título para {producto.nombre}: {info_producto["title"]}')
+            print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
+            print('---')
 
-# Iterar sobre los productos y actualizar la información en la base de datos
-for producto in productos:
-    # Procesar el producto si la URL base es correcta
-    info_producto = obtener_info_producto(producto.url)
-    if info_producto:
-        # Imprimir la información obtenida
-        print(f'Título para {producto.nombre}: {info_producto["title"]}')
-        print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
-        print('---')
-
-        # Actualizar el campo de precio en la base de datos
-        producto.precio = info_producto['price']
-        producto.save()
+            # Actualizar el campo de precio en la base de datos
+            producto.precio = info_producto['price']
+            producto.save()

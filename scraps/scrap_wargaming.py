@@ -28,7 +28,7 @@ def obtener_info_producto(url):
     options.add_argument("--disable-gpu")  # Applicable to windows
     options.add_argument("--disable-extensions")
     options.add_argument("--remote-debugging-port=9222")  # This i
-    service = Service('/usr/local/bin/chromedriver')
+    service = Service('../chromedriver')
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
@@ -66,15 +66,16 @@ def obtener_info_producto(url):
         driver.quit()
 
 
-moneda_clp = Moneda.objects.get(moneda='CLP')
-productos = Producto.objects.filter(moneda=moneda_clp)
+def run_scraping_wargaming():
+    moneda_clp = Moneda.objects.get(moneda='CLP')
+    productos = Producto.objects.filter(moneda=moneda_clp)
 
-for producto in productos:
-    if producto.url.startswith("https://www.wargaming.cl/"):
-        info_producto = obtener_info_producto(producto.url)
-        if info_producto:
-            print(f'Título para {producto.nombre}: {info_producto["title"]}')
-            print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
-            print('---')
-            producto.precio = info_producto['price']
-            producto.save()
+    for producto in productos:
+        if producto.url.startswith("https://www.wargaming.cl/"):
+            info_producto = obtener_info_producto(producto.url)
+            if info_producto:
+                print(f'Título para {producto.nombre}: {info_producto["title"]}')
+                print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
+                print('---')
+                producto.precio = info_producto['price']
+                producto.save()

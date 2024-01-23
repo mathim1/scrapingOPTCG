@@ -20,8 +20,6 @@ def obtener_info_producto(url):
 
     # Usar la sesión para manejar la solicitud
     r = s.get(url)
-    # Ejecutar JavaScript si es necesario
-    r.html.render(sleep=1)
     # Parsear el HTML renderizado
     soup = BeautifulSoup(r.html.html, 'html.parser')
 
@@ -41,22 +39,22 @@ def obtener_info_producto(url):
 
     return {'title': product_title, 'price': total_price}
 
+def run_scraping_geekers():
+    moneda_clp = Moneda.objects.get(moneda='CLP')
 
-moneda_clp = Moneda.objects.get(moneda='CLP')
+    # Obtener todos los productos con esa moneda
+    productos = Producto.objects.filter(moneda=moneda_clp)
 
-# Obtener todos los productos con esa moneda
-productos = Producto.objects.filter(moneda=moneda_clp)
+    # Iterar sobre los productos y actualizar la información en la base de datos
+    for producto in productos:
+        # Solo procesar el producto si la URL base es la correcta
+        info_producto = obtener_info_producto(producto.url)
+        if info_producto:
+            # Imprimir la información obtenida
+            print(f'Título para {producto.nombre}: {info_producto["title"]}')
+            print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
+            print('---')
 
-# Iterar sobre los productos y actualizar la información en la base de datos
-for producto in productos:
-    # Solo procesar el producto si la URL base es la correcta
-    info_producto = obtener_info_producto(producto.url)
-    if info_producto:
-        # Imprimir la información obtenida
-        print(f'Título para {producto.nombre}: {info_producto["title"]}')
-        print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
-        print('---')
-
-        # Actualizar el campo de precio en la base de datos
-        producto.precio = info_producto['price']
-        producto.save()
+            # Actualizar el campo de precio en la base de datos
+            producto.precio = info_producto['price']
+            producto.save()

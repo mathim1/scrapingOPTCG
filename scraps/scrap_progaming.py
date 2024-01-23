@@ -50,22 +50,24 @@ def obtener_info_producto(url):
     return {'title': product_title, 'price': total_price}
 
 
-# Obtiene la instancia de la moneda CLP
-moneda_clp = Moneda.objects.get(moneda='CLP')
+def run_scraping_progaming():
+    # Obtiene la instancia de la moneda CLP
+    moneda_clp = Moneda.objects.get(moneda='CLP')
 
-# Obtener todos los productos con esa moneda
-productos = Producto.objects.filter(moneda=moneda_clp)
+    # Obtener todos los productos con esa moneda
+    productos = Producto.objects.filter(moneda=moneda_clp)
 
-# Iterar sobre los productos y actualizar la información en la base de datos
-for producto in productos:
-    # Procesar el producto si la URL base es correcta
-    info_producto = obtener_info_producto(producto.url)
-    if info_producto:
-        # Imprimir la información obtenida
-        print(f'Título para {producto.nombre}: {info_producto["title"]}')
-        print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
-        print('---')
+    # Iterar sobre los productos y actualizar la información en la base de datos
+    for producto in productos:
+        # Procesar el producto si la URL base es correcta
+        info_producto = obtener_info_producto(producto.url)
+        if info_producto:
+            # Imprimir la información obtenida
+            print(f'Título para {producto.nombre}: {info_producto["title"]}')
+            print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
+            print('---')
 
-        # Actualizar el campo de precio en la base de datos
-        producto.precio = info_producto['price']
-        producto.save()
+            # Actualizar el campo de precio en la base de datos
+            producto.precio = info_producto['price']
+            producto.save()
+

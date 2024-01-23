@@ -15,7 +15,6 @@ s = HTMLSession()
 
 def obtener_info_producto(url):
     r = s.get(url)
-    r.html.render(sleep=0)
     soup = BeautifulSoup(r.html.html, 'html.parser')
 
     # Obtener el título
@@ -33,21 +32,22 @@ def obtener_info_producto(url):
     return {'title': product_title, 'price': price_value}
 
 
-# Primero obtenemos el id de la moneda USD
-moneda_usd = Moneda.objects.get(moneda='USD')
+def run_scraping_amazon():
+    # Primero obtenemos el id de la moneda USD
+    moneda_usd = Moneda.objects.get(moneda='USD')
 
-# Luego obtenemos todos los productos que tengan esa moneda
-productos = Producto.objects.filter(moneda=moneda_usd)
+    # Luego obtenemos todos los productos que tengan esa moneda
+    productos = Producto.objects.filter(moneda=moneda_usd)
 
-# Iterar sobre los productos y actualizar la información en la base de datos
-for producto in productos:
-    info_producto = obtener_info_producto(producto.url)
+    # Iterar sobre los productos y actualizar la información en la base de datos
+    for producto in productos:
+        info_producto = obtener_info_producto(producto.url)
 
-    # Imprimir la información obtenida
-    print(f'Título para {producto.nombre}: {info_producto["title"]}')
-    print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
-    print('---')
+        # Imprimir la información obtenida
+        print(f'Título para {producto.nombre}: {info_producto["title"]}')
+        print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
+        print('---')
 
-    # Actualizar el campo de precio en la base de datos
-    producto.precio = info_producto['price']
-    producto.save()
+        # Actualizar el campo de precio en la base de datos
+        producto.precio = info_producto['price']
+        producto.save()

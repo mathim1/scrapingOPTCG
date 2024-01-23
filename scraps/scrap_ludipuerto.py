@@ -29,7 +29,7 @@ def obtener_info_producto(url):
     options.add_argument("--disable-extensions")
     options.add_argument("--remote-debugging-port=9222")  # This is important
 
-    service = Service('/usr/local/bin/chromedriver')
+    service = Service('/opt/bin/chromedriver')
 
     driver = webdriver.Chrome(service=service, options=options)
 
@@ -66,16 +66,16 @@ def obtener_info_producto(url):
     finally:
         driver.quit()
 
+def run_scraping_ludipuerto():
+    # Rest of your code
+    moneda_clp = Moneda.objects.get(moneda='CLP')
+    productos = Producto.objects.filter(moneda=moneda_clp)
 
-# Rest of your code
-moneda_clp = Moneda.objects.get(moneda='CLP')
-productos = Producto.objects.filter(moneda=moneda_clp)
-
-for producto in productos:
-    info_producto = obtener_info_producto(producto.url)
-    if info_producto:
-        print(f'Título para {producto.nombre}: {info_producto["title"]}')
-        print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
-        print('---')
-        producto.precio = info_producto['price']
-        producto.save()
+    for producto in productos:
+        info_producto = obtener_info_producto(producto.url)
+        if info_producto:
+            print(f'Título para {producto.nombre}: {info_producto["title"]}')
+            print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
+            print('---')
+            producto.precio = info_producto['price']
+            producto.save()

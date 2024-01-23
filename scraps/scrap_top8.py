@@ -29,7 +29,7 @@ def obtener_info_producto(url):
     options.add_argument("--disable-extensions")
     options.add_argument("--remote-debugging-port=9222")  # This is important
 
-    service = Service('/usr/local/bin/chromedriver')
+    service = Service('/opt/bin/chromedriver')
 
     driver = webdriver.Chrome(service=service, options=options)
 
@@ -76,19 +76,20 @@ def obtener_info_producto(url):
     finally:
         driver.quit()
 
-# Obtener la instancia de la moneda CLP
-moneda_clp = Moneda.objects.get(moneda='CLP')
+def run_scraping_top8():
+    # Obtener la instancia de la moneda CLP
+    moneda_clp = Moneda.objects.get(moneda='CLP')
 
-# Obtener todos los productos con esa moneda
-productos = Producto.objects.filter(moneda=moneda_clp)
+    # Obtener todos los productos con esa moneda
+    productos = Producto.objects.filter(moneda=moneda_clp)
 
-# Iterar sobre los productos y actualizar la información en la base de datos
-for producto in productos:
-    info_producto = obtener_info_producto(producto.url)
-    if info_producto:
-        print(f'Título para {producto.nombre}: {info_producto["title"]}')
-        print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
-        print('---')
+    # Iterar sobre los productos y actualizar la información en la base de datos
+    for producto in productos:
+        info_producto = obtener_info_producto(producto.url)
+        if info_producto:
+            print(f'Título para {producto.nombre}: {info_producto["title"]}')
+            print(f'Precio Total para {producto.nombre}: {info_producto["price"]}')
+            print('---')
 
-        producto.precio = info_producto['price']
-        producto.save()
+            producto.precio = info_producto['price']
+            producto.save()
