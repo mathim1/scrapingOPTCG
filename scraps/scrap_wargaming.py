@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/home/ec2-user/onePieceTCG')
+
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "onePieceTCG.settings")
@@ -23,12 +26,8 @@ def obtener_info_producto(url):
 
     options = Options()
     options.headless = True
-    options.add_argument("--no-sandbox")  # Bypass OS security mod
-    options.add_argument("--disable-dev-shm-usage")  # Overcome li
-    options.add_argument("--disable-gpu")  # Applicable to windows
-    options.add_argument("--disable-extensions")
-    options.add_argument("--remote-debugging-port=9222")  # This i
-    service = Service('../chromedriver')
+    options.binary_location = '/home/ec2-user/chrome-headless-shell-linux64/chrome-headless-shell'  # Replace with actual path
+    service = Service('/home/ec2-user/chromedriver-linux64/chromedriver')
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
@@ -79,3 +78,5 @@ def run_scraping_wargaming():
                 print('---')
                 producto.precio = info_producto['price']
                 producto.save()
+
+run_scraping_wargaming()
