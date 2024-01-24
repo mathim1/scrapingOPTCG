@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/home/ec2-user/onePieceTCG/env/bin/python3
 import sys
 
 sys.path.append('/home/ec2-user/onePieceTCG')
