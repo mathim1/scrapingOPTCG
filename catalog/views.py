@@ -6,8 +6,6 @@ from decimal import Decimal
 import requests
 import math
 from django.http import HttpResponse
-from scraps import *
-import logging
 
 
 def hello_world(request):
@@ -72,54 +70,3 @@ def obtener_precio(carta_id):
         return carta.price
     except Card.DoesNotExist:
         return 0  # O manejar de otra manera si la carta no existe
-
-
-class RunAllScrapersView(APIView):
-    def get(self, request, format=None):
-        logger = logging.getLogger('django')
-        scrapers = [
-            run_scraping_addictionmodel,
-            run_scraping_carduniverse,
-            run_scraping_deckkingdom,
-            run_scraping_drawncl,
-            run_scraping_gameofmagic,
-            run_scraping_gamingplace,
-            run_scraping_geekers,
-            run_scraping_guildreams,
-            run_scraping_lacomarca,
-            run_scraping_lafortaleza,
-            run_scraping_lareinadelnahuel,
-            run_scraping_llanowar,
-            run_scraping_ludipuerto,
-            run_scraping_m4ever,
-            run_scraping_magichile,
-            run_scraping_magicsur,
-            run_scraping_mugiwaratcg,
-            run_scraping_piedrabruja,
-            run_scraping_playset,
-            run_scraping_pokesos,
-            run_scraping_progaming,
-            run_scraping_reinoduelos,
-            run_scraping_storedevastation,
-            run_scraping_tablecat,
-            run_scraping_thirdimpact,
-            run_scraping_top8,
-            run_scraping_voidstore,
-            run_scraping_wargaming,
-        ]
-
-        results = {}
-
-        for scraper in scrapers:
-            scraper_name = scraper.__name__
-            logger.info(f'Starting scraper: {scraper_name}')
-
-            try:
-                scraper()
-                logger.info(f'Successfully finished scraper: {scraper_name}')
-                results[scraper_name] = "Success"
-            except Exception as e:
-                logger.error(f'Error in scraper {scraper_name}: {str(e)}')
-                results[scraper_name] = f"Failed: {str(e)}"
-
-        return Response({"status": "Completed", "results": results})

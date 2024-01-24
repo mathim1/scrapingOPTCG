@@ -14,6 +14,7 @@ django.setup()
 from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 from catalog.models import Producto, Moneda
+import time
 
 s = HTMLSession()
 
@@ -56,5 +57,7 @@ def run_scraping_amazon():
         # Actualizar el campo de precio en la base de datos
         producto.precio = info_producto['price']
         producto.save()
+
+
 
 run_scraping_amazon()
