@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Activate virtual environment
+source /home/ec2-user/onePieceTCG/venv/bin/activate
+
+# Run the Python script
 /home/ec2-user/onePieceTCG/scraps/scrap_addictionmodel.py
 /home/ec2-user/onePieceTCG/scraps/scrap_amazon.py
 /home/ec2-user/onePieceTCG/scraps/scrap_amazonJP.py
@@ -24,10 +28,13 @@
 /home/ec2-user/onePieceTCG/scraps/scrap_playset.py
 /home/ec2-user/onePieceTCG/scraps/scrap_pokesos.py
 /home/ec2-user/onePieceTCG/scraps/scrap_progaming.py
-/home/ec2-user/onePieceTCG/scraps/scrap_reinoduelos.py 
-/home/ec2-user/onePieceTCG/scraps/scrap_storedevastation.py 
+/home/ec2-user/onePieceTCG/scraps/scrap_reinoduelos.py
+/home/ec2-user/onePieceTCG/scraps/scrap_storedevastation.py
 /home/ec2-user/onePieceTCG/scraps/scrap_tablecat.py
 /home/ec2-user/onePieceTCG/scraps/scrap_thirdimpact.py
 /home/ec2-user/onePieceTCG/scraps/scrap_top8.py
 /home/ec2-user/onePieceTCG/scraps/scrap_voidstore.py
 /home/ec2-user/onePieceTCG/scraps/scrap_wargaming.py
+
+# Deactivate the virtual environment
+deactivate
