@@ -11,6 +11,7 @@ import django
 
 django.setup()
 
+from requests_html import HTMLSession
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -29,9 +30,6 @@ def obtener_info_producto(url):
     options.headless = True
     options.binary_location = '/home/ec2-user/chrome-headless-shell-linux64/chrome-headless-shell'  # Replace with actual path
     service = Service('/home/ec2-user/chromedriver-linux64/chromedriver')
-    driver = webdriver.Chrome(service=service, options=options)
-
-    service = Service('/opt/bin/chromedriver')
 
     with webdriver.Chrome(service=service, options=options) as driver:
         driver.get(url)
@@ -78,5 +76,6 @@ def run_scraping_magicsur():
             print('---')
             producto.precio = info_producto['price']
             producto.save()
+
 
 run_scraping_magicsur()
