@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import sys
 
 sys.path.append('/home/ec2-user/onePieceTCG')
@@ -54,6 +55,7 @@ def obtener_info_producto(url):
 
     return {'title': product_title, 'price': total_price}
 
+
 def run_scraping_addictionmodel():
     # Obtiene la instancia de la moneda CLP
     moneda_clp = Moneda.objects.get(moneda='CLP')
@@ -74,5 +76,6 @@ def run_scraping_addictionmodel():
             # Actualizar el campo de precio en la base de datos
             producto.precio = info_producto['price']
             producto.save()
+
 
 run_scraping_addictionmodel()
