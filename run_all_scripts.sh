@@ -9,6 +9,7 @@ source /home/ec2-user/onePieceTCG/venv/bin/activate
 /home/ec2-user/onePieceTCG/scraps/scrap_carduniverse.py
 /home/ec2-user/onePieceTCG/scraps/scrap_deckkingdom.py
 /home/ec2-user/onePieceTCG/scraps/scrap_drawncl.py
+/home/ec2-user/onePieceTCG/scraps/scrap_flexo.py
 /home/ec2-user/onePieceTCG/scraps/scrap_gameofmagic.py
 /home/ec2-user/onePieceTCG/scraps/scrap_gamingplace.py
 /home/ec2-user/onePieceTCG/scraps/scrap_geekers.py
