@@ -26,15 +26,18 @@ def obtener_info_producto(url):
     response = s.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
+    # Verifica si el producto está fuera de stock
+    stock_element = soup.find('p', {'class': 'stock out-of-stock'})
+    if stock_element and stock_element.text.strip() == "Sin existencias":
+        return {'title': 'No se encontró el título', 'price': 0}
+
     product_title_element = soup.find('h1', {'class': 'product_title entry-title'})
     product_title = product_title_element.text.strip() if product_title_element else 'No se encontró el título'
 
     # Encuentra el elemento del precio
     price_element = soup.find('p', {'class': 'price'})
-
     if price_element:
         final_price_element = price_element.find('span', {'class': 'woocommerce-Price-amount amount'})
-
         if final_price_element:
             final_price = final_price_element.text.strip().replace('$', '').replace('.', '')
         else:
@@ -67,5 +70,6 @@ def run_scraping_tablecat():
             # Actualizar el campo de precio en la base de datos
             producto.precio = info_producto['price']
             producto.save()
+
 
 run_scraping_tablecat()
