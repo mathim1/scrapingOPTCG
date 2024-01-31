@@ -6,6 +6,7 @@ source /home/ec2-user/onePieceTCG/venv/bin/activate
 # Run the Python script
 /home/ec2-user/onePieceTCG/scraps/scrap_addictionmodel.py
 /home/ec2-user/onePieceTCG/scraps/scrap_aogeek.py
+/home/ec2-user/onePieceTCG/scraps/scrap_mmanga.py
 /home/ec2-user/onePieceTCG/scraps/scrap_carduniverse.py
 /home/ec2-user/onePieceTCG/scraps/scrap_deckkingdom.py
 /home/ec2-user/onePieceTCG/scraps/scrap_drawncl.py
